@@ -22,6 +22,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.928 0.006 264.531);
+  --border-gray-200: #e1e4e8;
   --input: oklch(0.928 0.006 264.531);
   --ring: oklch(0.707 0.022 261.325);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -29,7 +30,7 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --sidebar: oklch(0.985 0.002 247.839);
   --sidebar-foreground: oklch(0.13 0.028 261.692);
   --sidebar-primary: oklch(0.21 0.034 264.665);
@@ -38,6 +39,12 @@
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
+  --gray-1k: #0d0d0d;
+  --gray-550: #6a737d;
+  --green-350: #00aa45;
+  --green-550: #1e874b;
+  --bg-gray-50: #fafbfc;
+  --bg-gray-100: #f6f8fa;
 }
 
 .dark {
@@ -58,6 +65,7 @@
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.278 0.033 256.848);
+  --border-gray-200: #e1e4e8;
   --input: oklch(0.278 0.033 256.848);
   --ring: oklch(0.446 0.03 256.802);
   --chart-1: oklch(0.488 0.243 264.376);
@@ -93,6 +101,7 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-gray-200: var(--border-gray-200);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
@@ -112,6 +121,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-gray-1k: var(--gray-1k);
+  --color-gray-550: var(--gray-550);
+  --color-green-350: var(--green-350);
+  --color-green-550: var(--green-550);
+  --color-bg-gray-50: var(--bg-gray-50);
+  --color-bg-gray-100: var(--bg-gray-100);
 }
 
 @layer base {
@@ -121,4 +136,26 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@utility shadow-custom {
+  box-shadow:
+    0px 3px 3px -1.5px #00000008,
+    0px 1px 1px -0.5px #00000008;
+}
+
+@utility shadow-custom-sm {
+  box-shadow:
+    0px 12px 12px -6px #00000008,
+    0px 6px 6px -3px #00000008,
+    0px 3px 3px -1.5px #00000008;
+}
+
+@utility shadow-custom-xl {
+  box-shadow:
+    0px 24px 24px -12px #00000008,
+    0px 12px 12px -6px #00000008,
+    0px 6px 6px -3px #00000008,
+    0px 3px 3px -1.5px #00000008,
+    0px 1px 1px -0.5px #00000008;
 }
