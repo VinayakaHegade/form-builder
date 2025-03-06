@@ -127,6 +127,8 @@
   --color-green-550: var(--green-550);
   --color-bg-gray-50: var(--bg-gray-50);
   --color-bg-gray-100: var(--bg-gray-100);
+
+  --breakpoint-xs: 21rem;
 }
 
 @layer base {

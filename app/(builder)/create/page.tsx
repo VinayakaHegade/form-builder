@@ -7,7 +7,7 @@ import { ArrowUpRight, Check, Plus } from 'lucide-react';
 export default function Create() {
   return (
     <article className='flex min-h-dvh flex-col'>
-      <header className='border-border-gray-200 flex items-center justify-between gap-4 border-b px-6 py-3'>
+      <header className='border-border-gray-200 xs:justify-between xs:flex-nowrap flex flex-wrap items-center justify-center gap-3 border-b px-6 py-3'>
         <Input
           className='h-5.5 border-none p-0 !text-base/[1.375rem] font-semibold shadow-none focus-visible:ring-0'
           placeholder='Untitled form'
@@ -23,7 +23,7 @@ export default function Create() {
       <main className='flex flex-1 justify-center p-6'>
         <QuestionTypeDropdown />
       </main>
-      <footer className='border-border-gray-200 bg-bg-gray-100/90 flex flex-wrap items-center justify-between gap-4 border-t px-6 py-4 backdrop-blur-xs'>
+      <footer className='border-border-gray-200 bg-bg-gray-100/90 xs:justify-between flex flex-wrap items-center justify-center gap-2.5 border-t px-6 py-4 backdrop-blur-xs'>
         <Button
           variant='outline'
           className='cursor-pointer items-center'

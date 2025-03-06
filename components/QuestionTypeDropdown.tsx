@@ -36,7 +36,7 @@ export default function QuestionTypeDropdown() {
           <Plus /> Add Question
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='shadow-custom-xl w-[18.75rem] rounded-2xl p-1'>
+      <DropdownMenuContent className='shadow-custom-xl xs:w-[18.75rem] w-[90vw] rounded-2xl p-1'>
         <DropdownMenuLabel className='bg-bg-gray-50 text-gray-550 mb-1 rounded-lg px-4 py-2.5 text-xs font-semibold tracking-[4%]'>
           INPUT TYPES
         </DropdownMenuLabel>
