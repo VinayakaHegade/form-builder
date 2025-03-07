@@ -11,14 +11,16 @@ export default function Home() {
         </p>
       </div>
 
-      <div className='flex flex-wrap justify-center gap-4'>
+      <div className='flex cursor-pointer flex-wrap justify-center gap-4'>
         <Link href='/create/new'>
-          <Button className='bg-green-350 border-green-550 shadow-custom-sm border hover:bg-green-600'>
+          <Button className='bg-green-350 border-green-550 shadow-custom-sm cursor-pointer border hover:bg-green-600'>
             Create a Form
           </Button>
         </Link>
         <Link href='/submissions'>
-          <Button variant='outline'>View Submissions</Button>
+          <Button variant='outline' className='cursor-pointer'>
+            View Submissions
+          </Button>
         </Link>
       </div>
     </div>

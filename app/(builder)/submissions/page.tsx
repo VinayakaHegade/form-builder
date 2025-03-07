@@ -56,7 +56,11 @@ export default function SubmissionsPage() {
       <header className='border-border-gray-200 xs:flex-nowrap xs:justify-between flex flex-wrap items-center justify-between gap-3 border-b px-6 py-3'>
         <div className='flex items-center gap-2'>
           <Link href='/create/new'>
-            <Button variant='ghost' size='icon' className='h-9 w-9'>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='h-9 w-9 cursor-pointer'
+            >
               <ChevronLeft className='h-5 w-5' />
             </Button>
           </Link>
@@ -119,7 +123,7 @@ export default function SubmissionsPage() {
 
           <div className='mt-6 flex justify-center'>
             <Link href='/create/new'>
-              <Button className='bg-green-350 border-green-550 shadow-custom-sm border hover:bg-green-600'>
+              <Button className='bg-green-350 border-green-550 shadow-custom-sm cursor-pointer border hover:bg-green-600'>
                 Create New Form
               </Button>
             </Link>

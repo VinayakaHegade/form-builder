@@ -8,7 +8,6 @@ import Link from 'next/link';
 import FormField from '@/components/FormField';
 import { formStore } from '@/lib/store';
 import { use } from 'react';
-import { useSearchParams } from 'next/navigation';
 
 export default function PreviewPage({ params }: { params: any }) {
   const unwrappedParams = use(params) as { formId: string };

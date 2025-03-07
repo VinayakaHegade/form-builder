@@ -42,8 +42,8 @@ export default function QuestionCard({
 
     if (type === QuestionType.SingleSelect && !question.options) {
       updatedData.options = [
-        { id: `option-${Date.now()}`, value: 'Option 1' },
-        { id: `option-${Date.now() + 1}`, value: 'Option 2' },
+        { id: `option-${Date.now()}`, value: '' },
+        { id: `option-${Date.now() + 1}`, value: '' },
       ];
     }
 
@@ -56,8 +56,7 @@ export default function QuestionCard({
         return (
           <Input
             disabled
-            className='bg-bg-gray-100 h-8 py-0'
-            placeholder='Short answer text'
+            className='bg-bg-gray-100 border-border-gray-200 h-8 py-0'
           />
         );
       case QuestionType.LongAnswer:
@@ -65,7 +64,6 @@ export default function QuestionCard({
           <Textarea
             disabled
             className='bg-bg-gray-100 border-border-gray-200 h-20 w-full resize-none rounded-md border p-2 focus:outline-none'
-            placeholder='Long answer text'
           />
         );
       case QuestionType.SingleSelect:
@@ -78,7 +76,7 @@ export default function QuestionCard({
                   id={option.id}
                   name={question.id}
                   disabled
-                  className='h-4 w-4'
+                  className='border-border-gray-200 h-4 w-4'
                 />
                 <Input
                   value={option.value}
@@ -87,7 +85,7 @@ export default function QuestionCard({
                     newOptions[index] = { ...option, value: e.target.value };
                     onUpdate(question.id, { options: newOptions });
                   }}
-                  className='h-8 flex-1 py-0 shadow-none focus-visible:ring-0'
+                  className='border-border-gray-200 h-8 flex-1 py-0 shadow-none focus-visible:ring-0'
                   placeholder={`Option ${index + 1}`}
                 />
                 {index === (question.options?.length || 0) - 1 && (
@@ -131,15 +129,14 @@ export default function QuestionCard({
           <Input
             disabled
             type='number'
-            className='bg-bg-gray-100 h-8 py-0'
-            placeholder='0'
+            className='bg-bg-gray-100 border-border-gray-200 h-8 py-0'
           />
         );
       case QuestionType.URL:
         return (
           <Input
             disabled
-            className='bg-bg-gray-100 h-8 py-0'
+            className='bg-bg-gray-100 border-border-gray-200 h-8 py-0'
             placeholder='http://example.com'
           />
         );
@@ -148,11 +145,11 @@ export default function QuestionCard({
           <div className='relative'>
             <Input
               disabled
-              className='bg-bg-gray-100 h-8 py-0 pr-10'
+              className='bg-bg-gray-100 border-border-gray-200 h-8 py-0 pr-10'
               placeholder='MM-DD-YYYY'
             />
             <div className='absolute top-1/2 right-2 -translate-y-1/2 transform'>
-              <Icons.calendar className='h-4 w-4 text-gray-400' />
+              <Icons.calendar className='h-4 w-4 opacity-50' />
             </div>
           </div>
         );
@@ -165,7 +162,7 @@ export default function QuestionCard({
     <Button
       variant='ghost'
       size='icon'
-      className='h-5 w-9 cursor-pointer bg-transparent opacity-50 hover:bg-transparent hover:opacity-100'
+      className='h-5 w-9 cursor-pointer gap-0 bg-transparent opacity-50 hover:bg-transparent hover:opacity-100'
     >
       {renderQuestionTypeIcon()}
       <ChevronDown className='h-4 w-4' />

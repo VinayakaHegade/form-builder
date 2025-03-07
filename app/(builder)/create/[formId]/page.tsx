@@ -29,7 +29,7 @@ export default function CreateFormPage({ params }: { params: any }) {
     questions: [],
   });
 
-  const [hasPermanentId, setHasPermanentId] = useState(true);
+  const isFormEmpty = form.questions.length === 0;
 
   useEffect(() => {
     setIsClient(true);
@@ -50,7 +50,6 @@ export default function CreateFormPage({ params }: { params: any }) {
     const storedForm = formStore.getForm(formId);
     if (storedForm) {
       setForm(storedForm);
-      setHasPermanentId(true);
     } else {
       const newForm = {
         id: formId,
@@ -77,8 +76,8 @@ export default function CreateFormPage({ params }: { params: any }) {
       options:
         type === QuestionType.SingleSelect
           ? [
-              { id: `option-${Date.now()}`, value: 'Option 1' },
-              { id: `option-${Date.now() + 1}`, value: 'Option 2' },
+              { id: `option-${Date.now()}`, value: '' },
+              { id: `option-${Date.now() + 1}`, value: '' },
             ]
           : undefined,
     };
@@ -137,15 +136,26 @@ export default function CreateFormPage({ params }: { params: any }) {
           />
         </div>
         <div className='flex gap-2'>
-          <Link href={`/preview/${form.id}?fromCreate=true`}>
+          {isFormEmpty ? (
             <Button
               variant='outline'
-              className='cursor-pointer items-center'
+              className='cursor-not-allowed items-center'
               size='sm'
+              disabled
             >
               Preview <ArrowUpRight />
             </Button>
-          </Link>
+          ) : (
+            <Link href={`/preview/${form.id}?fromCreate=true`}>
+              <Button
+                variant='outline'
+                className='cursor-pointer items-center'
+                size='sm'
+              >
+                Preview <ArrowUpRight />
+              </Button>
+            </Link>
+          )}
         </div>
       </header>
 
@@ -176,6 +186,7 @@ export default function CreateFormPage({ params }: { params: any }) {
           className='cursor-pointer items-center'
           size='sm'
           onClick={handleSaveDraft}
+          disabled={isFormEmpty}
         >
           <Icons.draft />
           Save as Draft
@@ -184,7 +195,7 @@ export default function CreateFormPage({ params }: { params: any }) {
           className='shadow-custom-sm bg-green-350 border-green-550 cursor-pointer items-center border hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50'
           size='sm'
           onClick={handlePublish}
-          disabled={form.published}
+          disabled={form.published || isFormEmpty}
         >
           <Check />
           {form.published ? 'Published' : 'Publish form'}
