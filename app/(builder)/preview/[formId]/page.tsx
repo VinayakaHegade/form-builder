@@ -14,9 +14,6 @@ export default function PreviewPage({ params }: { params: any }) {
   const unwrappedParams = use(params) as { formId: string };
   const formId = unwrappedParams.formId;
 
-  const searchParams = useSearchParams();
-  const fromCreate = searchParams.get('fromCreate') === 'true';
-
   const [isClient, setIsClient] = useState(false);
   const [form, setForm] = useState<Form | null>(null);
   const [formNotFound, setFormNotFound] = useState(false);

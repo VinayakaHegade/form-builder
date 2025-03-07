@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <div className='flex min-h-dvh flex-col items-center justify-center bg-gray-50 p-6'>
+    <div className='flex min-h-dvh flex-col items-center justify-center p-6'>
       <div className='mb-12 text-center'>
         <h1 className='mb-4 text-4xl font-bold'>Form Builder</h1>
         <p className='text-lg text-gray-600'>
