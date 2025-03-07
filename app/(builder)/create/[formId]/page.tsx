@@ -106,7 +106,7 @@ export default function CreateFormPage({ params }: { params: any }) {
 
   const handleSaveDraft = () => {
     formStore.saveForm(form);
-    toast.success('Form saved as draft');
+    toast.success('Form Saved as Draft');
   };
 
   const handlePublish = () => {
@@ -117,7 +117,7 @@ export default function CreateFormPage({ params }: { params: any }) {
     };
 
     formStore.saveForm(publishedForm);
-    toast.success('Form published');
+    toast.success('Form Published Successfully');
     router.push(`/submit/${publishedForm.id}`);
   };
 

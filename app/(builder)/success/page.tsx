@@ -29,10 +29,10 @@ function SuccessContent() {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(formLink);
-      toast.success('Form link copied to clipboard');
+      toast.success('Form Link Copied to Clipboard');
     } catch (error) {
-      console.error('Failed to copy to clipboard', error);
-      toast.error('Failed to copy form link to clipboard');
+      console.error('Failed to Copy to Clipboard', error);
+      toast.error('Failed to Copy Form Link to Clipboard');
     }
   };
 
