@@ -8,15 +8,20 @@ import { Button } from './ui/button';
 import { Link, Hash, ChevronDown, Plus, Minus } from 'lucide-react';
 import QuestionTypeDropdown from './QuestionTypeDropdown';
 import { Textarea } from './ui/textarea';
+import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
 
 interface QuestionCardProps {
   question: Question;
   onUpdate: (id: string, data: Partial<Question>) => void;
+  dragHandleProps?: DraggableProvidedDragHandleProps | null;
+  isDragging?: boolean;
 }
 
 export default function QuestionCard({
   question,
   onUpdate,
+  dragHandleProps,
+  isDragging = false,
 }: QuestionCardProps) {
   const renderQuestionTypeIcon = () => {
     switch (question.type) {
@@ -170,8 +175,12 @@ export default function QuestionCard({
   );
 
   return (
-    <article className='border-border-gray-200 mb-4 rounded-lg border bg-white p-4'>
-      <div className='flex items-center justify-between'>
+    <article
+      className={`border-border-gray-200 mb-4 rounded-lg border p-4 ${
+        isDragging ? 'bg-bg-gray-50 z-10' : ''
+      }`}
+    >
+      <div className='flex items-center justify-between gap-2.5 md:gap-8'>
         <div className='flex w-full flex-col gap-1'>
           <Input
             value={question.title}
@@ -188,14 +197,18 @@ export default function QuestionCard({
             className='h-4 border-none p-0 text-xs shadow-none focus-visible:ring-0'
           />
         </div>
-        <div className='ml-auto flex items-center gap-2'>
-          <div className='group relative'>
-            <QuestionTypeDropdown
-              onSelectType={handleTypeChange}
-              triggerButton={typeIconTrigger}
-            />
+        <div className='flex items-center gap-2'>
+          <QuestionTypeDropdown
+            onSelectType={handleTypeChange}
+            triggerButton={typeIconTrigger}
+          />
+          <div
+            {...dragHandleProps}
+            className='cursor-grab rounded-md p-1 hover:bg-gray-100'
+            title='Drag to reorder'
+          >
+            <Icons.dragDropVertical />
           </div>
-          <Icons.dragDropVertical className='cursor-grab' />
         </div>
       </div>
 

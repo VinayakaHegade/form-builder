@@ -7,11 +7,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, Question, QuestionType } from '@/lib/types';
 import { formStore } from '@/lib/store';
-import { ArrowUpRight, Check, Plus } from 'lucide-react';
+import { ArrowUpRight, Check } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from '@hello-pangea/dnd';
 import { toast } from 'sonner';
 
 const generateUniqueId = () =>
@@ -29,6 +35,7 @@ export default function CreateFormPage({ params }: { params: any }) {
     questions: [],
   });
 
+  const [isDragging, setIsDragging] = useState(false);
   const isFormEmpty = form.questions.length === 0;
 
   useEffect(() => {
@@ -114,6 +121,32 @@ export default function CreateFormPage({ params }: { params: any }) {
     router.push(`/submit/${publishedForm.id}`);
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    setIsDragging(false);
+    const { destination, source } = result;
+
+    if (
+      !destination ||
+      (destination.droppableId === source.droppableId &&
+        destination.index === source.index)
+    ) {
+      return;
+    }
+
+    const newQuestions = Array.from(form.questions);
+    const [movedQuestion] = newQuestions.splice(source.index, 1);
+    newQuestions.splice(destination.index, 0, movedQuestion);
+
+    setForm((prev) => ({
+      ...prev,
+      questions: newQuestions,
+    }));
+  };
+
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
   if (!isClient) {
     return (
       <div className='flex min-h-dvh items-center justify-center'>
@@ -124,50 +157,78 @@ export default function CreateFormPage({ params }: { params: any }) {
 
   return (
     <article className='flex min-h-dvh flex-col'>
-      <header className='border-border-gray-200 xs:justify-between xs:flex-nowrap flex flex-wrap items-center justify-center gap-3 border-b px-6 py-3'>
-        <div className='flex items-center gap-2'>
-          <Input
-            className='h-5.5 border-none p-0 !text-base/[1.375rem] font-semibold shadow-none focus-visible:ring-0'
-            placeholder='Untitled form'
-            value={form.title}
-            onChange={(e) =>
-              setForm((prev) => ({ ...prev, title: e.target.value }))
-            }
-          />
-        </div>
-        <div className='flex gap-2'>
-          {isFormEmpty ? (
+      <header className='border-border-gray-200 xs:justify-between xs:flex-nowrap flex flex-wrap items-center justify-center gap-3 border-b px-6 py-3 md:gap-8'>
+        <Input
+          className='h-5.5 border-none p-0 !text-base/[1.375rem] font-semibold shadow-none focus-visible:ring-0'
+          placeholder='Untitled form'
+          value={form.title}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, title: e.target.value }))
+          }
+        />
+        {isFormEmpty ? (
+          <Button
+            variant='outline'
+            className='cursor-not-allowed items-center'
+            size='sm'
+            disabled
+          >
+            Preview <ArrowUpRight />
+          </Button>
+        ) : (
+          <Link href={`/preview/${form.id}?fromCreate=true`}>
             <Button
               variant='outline'
-              className='cursor-not-allowed items-center'
+              className='cursor-pointer items-center'
               size='sm'
-              disabled
             >
               Preview <ArrowUpRight />
             </Button>
-          ) : (
-            <Link href={`/preview/${form.id}?fromCreate=true`}>
-              <Button
-                variant='outline'
-                className='cursor-pointer items-center'
-                size='sm'
-              >
-                Preview <ArrowUpRight />
-              </Button>
-            </Link>
-          )}
-        </div>
+          </Link>
+        )}
       </header>
 
       <main className='flex flex-1 flex-col items-center p-6'>
         <div className='w-full max-w-3xl'>
-          {form.questions.map((question) => (
-            <QuestionCard
-              key={question.id}
-              question={question}
-              onUpdate={handleUpdateQuestion}
-            />
-          ))}
+          <DragDropContext
+            onDragEnd={handleDragEnd}
+            onDragStart={handleDragStart}
+          >
+            <Droppable droppableId='questions'>
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className='w-full'
+                >
+                  {form.questions.map((question, index) => (
+                    <Draggable
+                      key={question.id}
+                      draggableId={question.id}
+                      index={index}
+                      isDragDisabled={form.published}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          className={`${snapshot.isDragging ? 'opacity-70' : ''}`}
+                        >
+                          <QuestionCard
+                            question={question}
+                            onUpdate={handleUpdateQuestion}
+                            dragHandleProps={provided.dragHandleProps}
+                            isDragging={snapshot.isDragging}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
 
           <div
             className={`flex items-center justify-center ${form.questions.length > 0 ? 'pt-4 pb-2' : ''}`}
