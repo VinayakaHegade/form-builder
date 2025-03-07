@@ -195,4 +195,43 @@ export const Icons = {
       />
     </svg>
   ),
+  number: (props: IconProps) => (
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      width='20'
+      height='20'
+      viewBox='0 0 24 24'
+      fill='none'
+      stroke='#0d0d0d'
+      strokeWidth='1.5'
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      {...props}
+    >
+      <line x1='4' x2='20' y1='9' y2='9' />
+      <line x1='4' x2='20' y1='15' y2='15' />
+      <line x1='10' x2='8' y1='3' y2='21' />
+      <line x1='16' x2='14' y1='3' y2='21' />
+    </svg>
+  ),
+  dragDropVertical: (props: IconProps) => (
+    <svg
+      width='25'
+      height='25'
+      viewBox='0 0 25 25'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+      {...props}
+    >
+      <g opacity='0.5'>
+        <path
+          d='M9.375 7.23828H9.38029M9.375 12.2383H9.38029M9.375 17.2383H9.38029M16.0364 7.23828H16.0417M16.0364 12.2383H16.0417M16.0364 17.2383H16.0417'
+          stroke='#0D0D0D'
+          strokeWidth='3'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+        />
+      </g>
+    </svg>
+  ),
 };
