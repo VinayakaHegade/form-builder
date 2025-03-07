@@ -6,7 +6,7 @@ import { CheckCircle, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { formStore } from '@/lib/store';
-
+import { toast } from 'sonner';
 function SuccessContent() {
   const searchParams = useSearchParams();
   const formId = searchParams.get('formId');
@@ -26,8 +26,14 @@ function SuccessContent() {
     }
   }, [formId]);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(formLink);
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(formLink);
+      toast.success('Form link copied to clipboard');
+    } catch (error) {
+      console.error('Failed to copy to clipboard', error);
+      toast.error('Failed to copy form link to clipboard');
+    }
   };
 
   return (
