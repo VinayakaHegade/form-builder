@@ -2,7 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, ArrowLeft, Copy, Check } from 'lucide-react';
+import { CheckCircle, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { formStore } from '@/lib/store';
@@ -26,6 +26,10 @@ function SuccessContent() {
     }
   }, [formId]);
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(formLink);
+  };
+
   return (
     <div className='flex min-h-dvh flex-col items-center justify-center p-6'>
       <div className='mb-6 flex flex-col items-center justify-center text-center'>
@@ -38,40 +42,29 @@ function SuccessContent() {
         </p>
       </div>
 
-      {formId && (
-        <div className='mb-6 w-full max-w-md'>
-          <p className='mb-2 text-sm text-gray-500'>Form link:</p>
-          <div className='flex w-full items-center gap-2 rounded-md border border-gray-200 bg-gray-50 p-2'>
-            <input
-              type='text'
-              value={formLink}
-              readOnly
-              className='flex-1 border-none bg-transparent text-sm focus:outline-none'
-            />
-          </div>
-        </div>
-      )}
-
-      <div className='flex flex-wrap gap-4'>
+      <div className='flex flex-wrap justify-center gap-4'>
+        {formId && (
+          <Button
+            onClick={copyToClipboard}
+            className='bg-green-350 border-green-550 shadow-custom-sm cursor-pointer border hover:bg-green-600'
+          >
+            Copy form link
+          </Button>
+        )}
         <Link href='/create/new'>
-          <Button variant='outline' className='flex items-center gap-2'>
-            <ArrowLeft className='h-4 w-4' />
+          <Button
+            variant='outline'
+            className='flex cursor-pointer items-center gap-2'
+          >
+            <Plus className='h-4 w-4' />
             Create new form
           </Button>
         </Link>
-        {formId && (
-          <Link href={`/preview/${formId}`}>
-            <Button className='bg-green-350 border-green-550 shadow-custom-sm border hover:bg-green-600'>
-              View form
-            </Button>
-          </Link>
-        )}
       </div>
     </div>
   );
 }
 
-// Main page component with Suspense
 export default function SuccessPage() {
   return (
     <Suspense
