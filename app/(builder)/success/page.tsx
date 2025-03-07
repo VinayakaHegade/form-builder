@@ -1,18 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, ArrowLeft, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { formStore } from '@/lib/store';
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams();
   const formId = searchParams.get('formId');
 
   const [formTitle, setFormTitle] = useState('your form');
-  const [copied, setCopied] = useState(false);
   const [formLink, setFormLink] = useState('');
 
   useEffect(() => {
@@ -39,6 +38,20 @@ export default function SuccessPage() {
         </p>
       </div>
 
+      {formId && (
+        <div className='mb-6 w-full max-w-md'>
+          <p className='mb-2 text-sm text-gray-500'>Form link:</p>
+          <div className='flex w-full items-center gap-2 rounded-md border border-gray-200 bg-gray-50 p-2'>
+            <input
+              type='text'
+              value={formLink}
+              readOnly
+              className='flex-1 border-none bg-transparent text-sm focus:outline-none'
+            />
+          </div>
+        </div>
+      )}
+
       <div className='flex flex-wrap gap-4'>
         <Link href='/create/new'>
           <Button variant='outline' className='flex items-center gap-2'>
@@ -55,5 +68,20 @@ export default function SuccessPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Main page component with Suspense
+export default function SuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className='flex min-h-dvh items-center justify-center'>
+          Loading...
+        </div>
+      }
+    >
+      <SuccessContent />
+    </Suspense>
   );
 }
