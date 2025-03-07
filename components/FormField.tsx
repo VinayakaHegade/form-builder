@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Question, QuestionType } from '@/lib/types';
 import { Input } from './ui/input';
 import { Calendar } from 'lucide-react';
+import { Icons } from './Icons';
 
 interface FormFieldProps {
   question: Question;
@@ -71,7 +72,7 @@ export default function FormField({
         <div className='space-y-2'>
           {question.options?.map((option) => (
             <div key={option.id} className='flex items-center gap-2'>
-              <input
+              <Input
                 type='radio'
                 id={option.id}
                 name={question.id}
@@ -116,14 +117,14 @@ export default function FormField({
         <div className='relative'>
           <Input
             disabled={readOnly}
-            type={isClient ? 'date' : 'text'}
+            type='text'
             className='bg-gray-50 pr-10'
             placeholder='MM-DD-YYYY'
             value={getInputValue()}
             onChange={(e) => handleChange(e.target.value)}
           />
           <div className='absolute top-1/2 right-2 -translate-y-1/2 transform'>
-            <Calendar className='h-5 w-5 text-gray-400' />
+            <Icons.calendar className='h-4 w-4 text-gray-400' />
           </div>
         </div>
       );

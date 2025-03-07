@@ -25,4 +25,6 @@ export interface Form {
   id: string;
   title: string;
   questions: Question[];
+  published?: boolean;
+  publishedAt?: string;
 }

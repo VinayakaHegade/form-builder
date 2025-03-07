@@ -69,24 +69,17 @@ export default function PreviewPage({ params }: { params: any }) {
 
   return (
     <article className='flex min-h-dvh flex-col'>
-      <header className='border-border-gray-200 xs:justify-between xs:flex-nowrap flex flex-wrap items-center justify-between gap-3 border-b px-6 py-3'>
-        <div className='flex items-center gap-2'>
-          <Link href={fromCreate ? `/create?formId=${formId}` : '/create'}>
-            <Button variant='ghost' size='icon' className='h-9 w-9'>
-              <ChevronLeft className='h-5 w-5' />
-            </Button>
-          </Link>
-          <h1 className='text-base font-semibold'>
-            {form.title || 'Untitled Form'}
-          </h1>
-        </div>
-        <Link href={`/submit/${form.id}`}>
+      <header className='border-border-gray-200 xs:justify-between xs:flex-nowrap flex flex-wrap items-center justify-between gap-2 border-b px-6 py-3'>
+        <h1 className='text-base font-semibold'>
+          {form.title || 'Untitled Form'}
+        </h1>
+        <Link href={`/create/${formId}`}>
           <Button
             variant='outline'
-            className='cursor-pointer items-center'
-            size='sm'
+            className='flex h-8 cursor-pointer items-center gap-1 px-4 py-0'
           >
-            Fill Form <ArrowUpRight />
+            <ChevronLeft className='h-4 w-4' />
+            Back to Editor
           </Button>
         </Link>
       </header>
@@ -127,16 +120,6 @@ export default function PreviewPage({ params }: { params: any }) {
                 <FormField question={question} readOnly={true} />
               </div>
             ))
-          )}
-
-          {form.questions.length > 0 && (
-            <div className='mt-4 text-center'>
-              <Link href={`/submit/${form.id}`}>
-                <Button className='shadow-custom-sm bg-green-350 border-green-550 cursor-pointer items-center border hover:bg-green-600'>
-                  Fill This Form <ArrowUpRight className='ml-1 h-4 w-4' />
-                </Button>
-              </Link>
-            </div>
           )}
         </div>
       </main>

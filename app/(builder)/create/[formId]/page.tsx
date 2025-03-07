@@ -10,50 +10,57 @@ import { formStore } from '@/lib/store';
 import { ArrowUpRight, Check, Plus } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { use } from 'react';
+import { toast } from 'sonner';
 
 const generateUniqueId = () =>
   `form-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
-const TEMP_DRAFT_ID = 'temp-draft-form';
+export default function CreateFormPage({ params }: { params: any }) {
+  const unwrappedParams = use(params) as { formId: string };
+  const formId = unwrappedParams.formId;
 
-export default function Create() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const formIdParam = searchParams.get('formId');
-
   const [isClient, setIsClient] = useState(false);
   const [form, setForm] = useState<Form>({
-    id: TEMP_DRAFT_ID,
+    id: formId,
     title: '',
     questions: [],
   });
 
-  const [hasPermanentId, setHasPermanentId] = useState(false);
+  const [hasPermanentId, setHasPermanentId] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
 
-    if (formIdParam) {
-      const paramForm = formStore.getForm(formIdParam);
-      if (paramForm) {
-        setForm(paramForm);
-        setHasPermanentId(paramForm.id !== TEMP_DRAFT_ID);
-        return;
-      }
-    }
+    if (formId === 'new') {
+      const newFormId = generateUniqueId();
+      const newForm = {
+        id: newFormId,
+        title: '',
+        questions: [],
+      };
 
-    const lastEditedForm = formStore.getLastEditedForm();
-    if (lastEditedForm) {
-      setForm(lastEditedForm);
-      setHasPermanentId(lastEditedForm.id !== TEMP_DRAFT_ID);
+      formStore.saveForm(newForm);
+      router.replace(`/create/${newFormId}`);
       return;
     }
 
-    const tempDraft = formStore.getOrCreateTempDraft();
-    setForm(tempDraft);
-    setHasPermanentId(false);
-  }, [formIdParam]);
+    const storedForm = formStore.getForm(formId);
+    if (storedForm) {
+      setForm(storedForm);
+      setHasPermanentId(true);
+    } else {
+      const newForm = {
+        id: formId,
+        title: '',
+        questions: [],
+      };
+      formStore.saveForm(newForm);
+      setForm(newForm);
+    }
+  }, [formId, router]);
 
   useEffect(() => {
     if (isClient && form.id) {
@@ -91,39 +98,21 @@ export default function Create() {
     }));
   };
 
-  const ensurePermanentId = () => {
-    if (form.id === TEMP_DRAFT_ID) {
-      const permanentId = generateUniqueId();
-
-      const updatedForm = { ...form, id: permanentId };
-
-      formStore.saveForm(updatedForm);
-
-      setForm(updatedForm);
-      setHasPermanentId(true);
-
-      return updatedForm;
-    }
-
-    return form;
-  };
-
   const handleSaveDraft = () => {
-    const savedForm = ensurePermanentId();
-    formStore.saveForm(savedForm);
-    alert('Form saved as draft');
+    formStore.saveForm(form);
+    toast.success('Form saved as draft');
   };
 
   const handlePublish = () => {
-    const savedForm = ensurePermanentId();
-    formStore.saveForm(savedForm);
-    alert('Form published successfully');
-  };
+    const publishedForm = {
+      ...form,
+      published: true,
+      publishedAt: new Date().toISOString(),
+    };
 
-  const handlePreview = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const formWithId = ensurePermanentId();
-    router.push(`/preview/${formWithId.id}?fromCreate=true`);
+    formStore.saveForm(publishedForm);
+    toast.success('Form published');
+    router.push(`/submit/${publishedForm.id}`);
   };
 
   if (!isClient) {
@@ -137,26 +126,27 @@ export default function Create() {
   return (
     <article className='flex min-h-dvh flex-col'>
       <header className='border-border-gray-200 xs:justify-between xs:flex-nowrap flex flex-wrap items-center justify-center gap-3 border-b px-6 py-3'>
-        <Input
-          className='h-5.5 border-none p-0 !text-base/[1.375rem] font-semibold shadow-none focus-visible:ring-0'
-          placeholder='Untitled form'
-          value={form.title}
-          onChange={(e) =>
-            setForm((prev) => ({ ...prev, title: e.target.value }))
-          }
-        />
-        <Link
-          href={hasPermanentId ? `/preview/${form.id}?fromCreate=true` : '#'}
-          onClick={!hasPermanentId ? handlePreview : undefined}
-        >
-          <Button
-            variant='outline'
-            className='cursor-pointer items-center'
-            size='sm'
-          >
-            Preview <ArrowUpRight />
-          </Button>
-        </Link>
+        <div className='flex items-center gap-2'>
+          <Input
+            className='h-5.5 border-none p-0 !text-base/[1.375rem] font-semibold shadow-none focus-visible:ring-0'
+            placeholder='Untitled form'
+            value={form.title}
+            onChange={(e) =>
+              setForm((prev) => ({ ...prev, title: e.target.value }))
+            }
+          />
+        </div>
+        <div className='flex gap-2'>
+          <Link href={`/preview/${form.id}?fromCreate=true`}>
+            <Button
+              variant='outline'
+              className='cursor-pointer items-center'
+              size='sm'
+            >
+              Preview <ArrowUpRight />
+            </Button>
+          </Link>
+        </div>
       </header>
 
       <main className='flex flex-1 flex-col items-center p-6'>
@@ -191,12 +181,13 @@ export default function Create() {
           Save as Draft
         </Button>
         <Button
-          className='shadow-custom-sm bg-green-350 border-green-550 cursor-pointer items-center border hover:bg-green-600'
+          className='shadow-custom-sm bg-green-350 border-green-550 cursor-pointer items-center border hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50'
           size='sm'
           onClick={handlePublish}
+          disabled={form.published}
         >
           <Check />
-          Publish form
+          {form.published ? 'Published' : 'Publish form'}
         </Button>
       </footer>
     </article>

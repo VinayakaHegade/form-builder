@@ -1,4 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Form Builder Application
+
+Form builder application built with Next.js 15, TypeScript, and Tailwind CSS that allows users to create, preview and submit forms
+
+## Live Demo
+
+[View Live Demo]()
+
+## Application Flow
+
+1. **Create a Form**:
+
+   - Start at the homepage and click "Create a Form"
+   - Add questions of different types using the "Add Question" dropdown
+   - Each form gets a unique URL for editing at `/create/[formId]`
+   - Forms can be saved as drafts or published
+
+2. **Preview a Form**:
+
+   - Click "Preview" to see how your form will appear to respondents
+   - Review and make changes as needed
+   - Return to the editor to continue editing
+
+3. **Publish a Form**:
+
+   - Click "Publish form" to make the form available for submissions
+   - Published forms can be filled out but not edited
+   - Publishing redirects to the submission page
+
+4. **Submit a Form**:
+
+   - Fill out the form with valid responses
+   - Track completion progress with the progress indicator
+   - Submit to save your responses
+   - Receive a success message with a shareable link
+
+5. **View Submissions**:
+   - Access the submissions page to see all form responses
+   - View submission details and timestamps
+
+## Assumptions Made
+
+For the sake of this assignment, the following assumptions were made:
+
+**Data Storage**: The application uses localStorage instead of a database for simplicity.
+
+## Features
+
+- **Form Creation**: Create custom forms with 6 question types:
+
+  - Short answer
+  - Long answer
+  - Single select (Radio buttons)
+  - Number
+  - URL
+  - Date
+
+- **Form Management**:
+
+  - Save forms as drafts
+  - Publish forms for submission
+  - Preview forms before publishing
+  - Each form has a unique URL
+
+- **Form Submission**:
+
+  - Form completeness indicator
+  - Success message after submission
+
+## Technical Implementation
+
+- **State Management**: Uses React's built-in state management and local storage
+- **Data Persistence**: LocalStorage for storing forms and submissions
+- **Routing**: Next.js App Router for navigation between pages
+- **Components**: Modular component architecture with shadcn UI components
+- **Styling**: TailwindCSS for responsive design
 
 ## Getting Started
 
@@ -15,22 +90,3 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
