@@ -84,7 +84,7 @@ export default function PreviewPage({ params }: { params: any }) {
       <main className='flex flex-1 flex-col items-center p-6'>
         <div className='w-full max-w-3xl'>
           <div className='mb-6 rounded-lg border border-gray-200 bg-white p-4'>
-            <h1 className='text-xl font-semibold'>
+            <h1 className='text-base font-semibold'>
               {form.title || 'Untitled Form'}
             </h1>
             <p className='text-sm text-gray-500'>Preview Mode</p>
@@ -103,7 +103,7 @@ export default function PreviewPage({ params }: { params: any }) {
                 className='mb-4 rounded-lg border border-gray-200 bg-white p-4'
               >
                 <div className='mb-2'>
-                  <h2 className='text-base font-medium'>
+                  <h2 className='text-sm font-semibold'>
                     {question.title || 'Untitled Question'}
                     {question.required && (
                       <span className='ml-1 text-red-500'>*</span>
