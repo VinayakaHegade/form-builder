@@ -87,6 +87,10 @@ export default function CreateFormPage({ params }: { params: any }) {
               { id: `option-${Date.now() + 1}`, value: '' },
             ]
           : undefined,
+      checkboxes:
+        type === QuestionType.Checkbox
+          ? [{ id: `checkbox-${Date.now()}`, value: '' }]
+          : undefined,
     };
 
     setForm((prev) => ({

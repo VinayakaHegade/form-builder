@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { Plus } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -26,6 +26,7 @@ const inputTypes = [
   { name: QuestionType.Number, icon: <Icons.number /> },
   { name: QuestionType.URL, icon: <Icons.url /> },
   { name: QuestionType.Date, icon: <Icons.calendar /> },
+  { name: QuestionType.Checkbox, icon: <Check /> },
 ];
 
 export default function QuestionTypeDropdown({

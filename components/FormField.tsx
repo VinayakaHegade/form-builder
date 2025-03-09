@@ -79,7 +79,7 @@ export default function FormField({
                 disabled={readOnly}
                 checked={!readOnly && value === option.id}
                 onChange={() => handleChange(option.id)}
-                className='h-4 w-4'
+                className='accent-green-350 h-4 w-4'
               />
               <label htmlFor={option.id} className='text-sm'>
                 {option.value}
@@ -126,6 +126,43 @@ export default function FormField({
           <div className='absolute top-1/2 right-2 -translate-y-1/2 transform'>
             <Icons.calendar className='h-4 w-4 text-gray-400' />
           </div>
+        </div>
+      );
+
+    case QuestionType.Checkbox:
+      return (
+        <div className='space-y-2'>
+          {question.checkboxes?.map((checkbox) => {
+            const selectedValues = Array.isArray(value)
+              ? value
+              : value
+                ? [value]
+                : [];
+            return (
+              <div key={checkbox.id} className='flex items-center gap-2'>
+                <Input
+                  id={checkbox.id}
+                  name={question.id}
+                  type='checkbox'
+                  disabled={readOnly}
+                  className='accent-green-350 h-4 w-4'
+                  checked={!readOnly && selectedValues.includes(checkbox.id)}
+                  onChange={() => {
+                    if (!onChange) return;
+                    const newSelectedValues = [...selectedValues];
+                    if (newSelectedValues.includes(checkbox.id)) {
+                      const index = newSelectedValues.indexOf(checkbox.id);
+                      newSelectedValues.splice(index, 1);
+                    } else {
+                      newSelectedValues.push(checkbox.id);
+                    }
+                    handleChange(newSelectedValues);
+                  }}
+                />
+                <label htmlFor={checkbox.id}>{checkbox.value}</label>
+              </div>
+            );
+          })}
         </div>
       );
 

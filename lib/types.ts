@@ -5,9 +5,15 @@ export enum QuestionType {
   Number = 'Number',
   URL = 'URL',
   Date = 'Date',
+  Checkbox = 'Checkbox',
 }
 
 export interface Option {
+  id: string;
+  value: string;
+}
+
+export interface Checkbox {
   id: string;
   value: string;
 }
@@ -19,6 +25,7 @@ export interface Question {
   helpText?: string;
   required: boolean;
   options?: Option[];
+  checkboxes?: Checkbox[];
 }
 
 export interface Form {

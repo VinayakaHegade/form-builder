@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Form, Question } from '@/lib/types';
+import { Form } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -140,7 +140,7 @@ export default function SubmitPage({ params }: { params: any }) {
             yet.
           </p>
         </div>
-        <Link href='/create'>
+        <Link href='/create/new'>
           <Button variant='outline'>Create a Form</Button>
         </Link>
       </div>
@@ -214,7 +214,7 @@ export default function SubmitPage({ params }: { params: any }) {
           <div className='mt-6 flex justify-end'>
             <Button
               type='submit'
-              className='bg-green-350 border-green-550 shadow-custom-sm border hover:bg-green-600'
+              className='bg-green-350 border-green-550 shadow-custom-sm cursor-pointer border hover:bg-green-600'
             >
               Submit
             </Button>

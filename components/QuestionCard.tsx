@@ -5,7 +5,7 @@ import { Question, QuestionType } from '@/lib/types';
 import { Input } from './ui/input';
 import { Icons } from './Icons';
 import { Button } from './ui/button';
-import { Link, Hash, ChevronDown, Plus, Minus } from 'lucide-react';
+import { Link, Hash, ChevronDown, Plus, Minus, Check } from 'lucide-react';
 import QuestionTypeDropdown from './QuestionTypeDropdown';
 import { Textarea } from './ui/textarea';
 import { DraggableProvidedDragHandleProps } from '@hello-pangea/dnd';
@@ -37,6 +37,8 @@ export default function QuestionCard({
         return <Link className='h-5 w-5' />;
       case QuestionType.Date:
         return <Icons.calendar className='h-5 w-5' />;
+      case QuestionType.Checkbox:
+        return <Check />;
       default:
         return null;
     }
@@ -50,6 +52,10 @@ export default function QuestionCard({
         { id: `option-${Date.now()}`, value: '' },
         { id: `option-${Date.now() + 1}`, value: '' },
       ];
+    }
+
+    if (type === QuestionType.Checkbox && !question.checkboxes) {
+      updatedData.checkboxes = [{ id: `checkbox-${Date.now()}`, value: '' }];
     }
 
     onUpdate(question.id, updatedData);
@@ -93,6 +99,20 @@ export default function QuestionCard({
                   className='border-border-gray-200 h-8 flex-1 py-0 shadow-none focus-visible:ring-0'
                   placeholder={`Option ${index + 1}`}
                 />
+                {index >= 2 && (
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='h-8 w-8 cursor-pointer'
+                    onClick={() => {
+                      const newOptions = [...(question.options || [])];
+                      newOptions.splice(index, 1);
+                      onUpdate(question.id, { options: newOptions });
+                    }}
+                  >
+                    <Minus className='h-4 w-4' />
+                  </Button>
+                )}
                 {index === (question.options?.length || 0) - 1 && (
                   <Button
                     variant='ghost'
@@ -110,21 +130,6 @@ export default function QuestionCard({
                     <Plus className='h-4 w-4' />
                   </Button>
                 )}
-                {index >= 1 &&
-                  index !== (question.options?.length || 0) - 1 && (
-                    <Button
-                      variant='ghost'
-                      size='icon'
-                      className='h-8 w-8 cursor-pointer'
-                      onClick={() => {
-                        const newOptions = [...(question.options || [])];
-                        newOptions.splice(index, 1);
-                        onUpdate(question.id, { options: newOptions });
-                      }}
-                    >
-                      <Minus className='h-4 w-4' />
-                    </Button>
-                  )}
               </div>
             ))}
           </div>
@@ -156,6 +161,65 @@ export default function QuestionCard({
             <div className='absolute top-1/2 right-2 -translate-y-1/2 transform'>
               <Icons.calendar className='h-4 w-4 opacity-50' />
             </div>
+          </div>
+        );
+      case QuestionType.Checkbox:
+        return (
+          <div className='space-y-2'>
+            {question.checkboxes?.map((checkbox, index) => (
+              <div key={checkbox.id} className='flex items-center gap-2'>
+                <Input
+                  type='checkbox'
+                  id={checkbox.id}
+                  name={question.id}
+                  disabled
+                  className='border-border-gray-200 h-4 w-4'
+                />
+                <Input
+                  className='border-border-gray-200 h-8 flex-1 py-0 shadow-none focus-visible:ring-0'
+                  value={checkbox.value}
+                  onChange={(e) => {
+                    const newCheckboxes = [...(question.checkboxes || [])];
+                    newCheckboxes[index] = {
+                      ...checkbox,
+                      value: e.target.value,
+                    };
+                    onUpdate(question.id, { checkboxes: newCheckboxes });
+                  }}
+                />
+                {index !== 0 && (
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='cursor-pointer'
+                    onClick={() => {
+                      const newCheckboxes = [...(question.checkboxes || [])];
+                      newCheckboxes.splice(index, 1);
+                      onUpdate(question.id, { checkboxes: newCheckboxes });
+                    }}
+                  >
+                    <Minus className='h-4 w-4' />
+                  </Button>
+                )}
+                {index === (question.checkboxes?.length || 0) - 1 && (
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='cursor-pointer'
+                    onClick={() => {
+                      const newCheckboxes = [...(question.checkboxes || [])];
+                      newCheckboxes.push({
+                        id: `checkbox-${Date.now()}`,
+                        value: '',
+                      });
+                      onUpdate(question.id, { checkboxes: newCheckboxes });
+                    }}
+                  >
+                    <Plus className='h-4 w-4' />
+                  </Button>
+                )}
+              </div>
+            ))}
           </div>
         );
       default:
